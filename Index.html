@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="UTF-8">
+	<title>Jogo da velha</title>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
+
+	<style>
+		.tableJogoVelha{
+            background-color: #00FFAE;
+            margin: auto;
+            width:    400px;
+			 height:  400px;
+		}
+
+		.celula{
+			width: 30px;
+    		height: 30px;
+			text-align: center;
+		}
+
+        .textoJogo{
+            text-align: center;
+            color: #00FF3C;  
+            font-size: 50px;
+        }
+
+        .textoParagrafo{
+            text-align: center;
+            color: #0B03A4;
+            font-size: 35px;
+        }
+
+        .container{
+			  width:  1000px;
+			  height: 1000px;
+			  background: linear-gradient(0, #120c56, #000000);
+			  margin: auto;
+	  	}
+	</style>
+</head>
+<body>
+	<div class="container">
+        <h1 class="textoJogo">JOGO DA VELHA</h1>
+        <div>
+        	<p class="textoParagrafo" id="jogada">Vez do jogador:</p>
+        </div>
+		<!-- <h1 align="center">Jogo da Velha</h1>
+
+		Usuario: é o xxx
+		Computador: é a O -->
+
+		<!-- <i class="far fa-circle"></i> -->
+		<!-- <i class="fas fa-times"></i> -->
+        <table class="tableJogoVelha"  border="1">
+			<tr>
+				<td class="celula" id="linha1Coluna1" onclick="adicionarXAqui('linha1Coluna1', 1)"></td>
+				<td class="celula" id="linha1Coluna2" onclick="adicionarXAqui('linha1Coluna2', 2)"></td>
+				<td class="celula" id="linha1Coluna3" onclick="adicionarXAqui('linha1Coluna3', 3)"></td>
+			</tr>
+			<tr>
+				<td class="celula" id="linha2Coluna1"  onclick="adicionarXAqui('linha2Coluna1', 4)"></td>
+				<td class="celula" id="linha2Coluna2"  onclick="adicionarXAqui('linha2Coluna2', 5)"></td>
+				<td class="celula" id="linha2Coluna3"  onclick="adicionarXAqui('linha2Coluna3', 6)"></td>
+			</tr>
+
+			<tr>
+				<td class="celula" id="linha3Coluna1" onclick="adicionarXAqui('linha3Coluna1', 7)"></td>
+				<td class="celula" id="linha3Coluna2" onclick="adicionarXAqui('linha3Coluna2', 8)"></td>
+				<td class="celula" id="linha3Coluna3" onclick="adicionarXAqui('linha3Coluna3', 9)"></td>
+			</tr>
+		</table>
+	</div>
+</body>
+
+	<script type="text/javascript">
+
+		var quadrantesMarcados = [];
+
+		var arrayIdComQuadrante = [
+			"",  //index 0
+			"linha1Coluna1", // index 1
+			"linha1Coluna2", // index 2
+			"linha1Coluna3", // index 3
+			"linha2Coluna1", // index 4
+			"linha2Coluna2", // index 5
+			"linha2Coluna3", // index 6
+			"linha3Coluna1", // index 7
+			"linha3Coluna2", // index 8
+			"linha3Coluna3", // index 9
+		]
+		
+		var tempoNaJogada = 2000; // MINHA VARIAVÉL PARA O SETTIMEOUT
+
+		function adicionarXAqui(idCelula, quadrante){	
+			if(quadrantesMarcados.indexOf(quadrante) == -1 ){
+				preencheVelha(idCelula, "x", quadrante)
+
+				document.querySelector("#jogada").innerHTML = "<i class='fas fa-times'></i>";
+				document.querySelector("#jogada").innerHTML = "Vez do jogador: <i class='far fa-circle'></i>";
+
+			 	setTimeout(function() {
+			 		efetuarJogadaDaMaquina();
+			 	},  tempoNaJogada);		
+			}			
+		}
+
+		function efetuarJogadaDaMaquina(){
+			/*computador
+				-> randomizar um quadrante   Math.floor(Math.random() * 10)
+				-> validar se esse quadrante já foi  if()
+				-> se foi marcado, gera um novo quadrante ->  Math.floor(Math.random() * 10)
+				-> se nao foi marcado, marca marca-lo
+			*/
+
+			var quadranteMaquina = Math.floor(Math.random() * 10);
+
+			if(quadrantesMarcados.indexOf(quadranteMaquina) == -1 ){
+				console.log("NÃO ACHEI NENHUM QUADRANTE. Quandrante: " + quadranteMaquina );
+
+				idQuadranteEscolhidoPelaMaquina = arrayIdComQuadrante[quadranteMaquina]
+				
+				preencheVelha(idQuadranteEscolhidoPelaMaquina, "0", quadranteMaquina)
+
+			}else{
+				console.log("ACHEI PREENCHIDO. Quandrante: " + quadranteMaquina );
+				console.log("AVISEI QUE IA DAR MERDA DANIEL");
+			}
+
+				document.querySelector("#jogada").innerHTML = "<i class='fas fa-times'></i>";
+				document.querySelector("#jogada").innerHTML = "Vez do jogador: <i class='fas fa-times'></i>";
+		}
+
+		function preencheVelha(idQuadrante, tipo, valorQuadrante){
+			if(valorQuadrante == 0){
+				return;
+			}
+
+			var elemento = document.getElementById(idQuadrante);
+			if(tipo == "x"){
+				elemento.innerHTML = "<i class='fas fa-times fa-2x'></i>";
+			}
+			else{
+				setTimeout(function(){
+					elemento.innerHTML = "<i class='far fa-circle fa-2x'></i>";
+				},  tempoNaJogada);
+			}
+			quadrantesMarcados.push(valorQuadrante); //adiciona elementos a um array	
+		}		
+
+	</script>
+</html>
